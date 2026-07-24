@@ -409,11 +409,11 @@ function spinRandom() {
     randomPlaceholderEl.hidden = true;
     randomResultEl.hidden = false;
     randomResultEl.innerHTML = `
-      <p class="name">${escapeHtml(picked.place_name)}</p>
-      <p class="cat">${escapeHtml(simplifyCategory(picked.category_name))}</p>
-      <div class="row"><span class="label">거리</span><span class="value">${formatDistance(picked.distance)} · ${formatWalkTime(picked.distance)}</span></div>
-      <div class="row"><span class="label">주소</span><span class="value">${escapeHtml(picked.road_address_name || picked.address_name || "정보 없음")}</span></div>
-      <div class="row"><span class="label">전화</span><span class="value">${escapeHtml(picked.phone || "정보 없음")}</span></div>
+      <p class="info-name">${escapeHtml(picked.place_name)}</p>
+      <p class="info-cat">${escapeHtml(simplifyCategory(picked.category_name))}</p>
+      <div class="info-row"><span class="label">거리</span><span class="value">${formatDistance(picked.distance)} · ${formatWalkTime(picked.distance)}</span></div>
+      <div class="info-row"><span class="label">주소</span><span class="value">${escapeHtml(picked.road_address_name || picked.address_name || "정보 없음")}</span></div>
+      <div class="info-row"><span class="label">전화</span><span class="value">${escapeHtml(picked.phone || "정보 없음")}</span></div>
     `;
     randomPickBtn.textContent = "🎲 다른 메뉴 뽑기";
     randomDetailBtn.hidden = false;
@@ -444,31 +444,42 @@ function loadKakaoMapsSdk() {
 let kakaoMap = null;
 let mapMarkers = [];
 let myLocationOverlay = null;
+let radiusCircle = null;
+const mapContainerEl = $("#mapContainer");
+const mapInfoPanelEl = $("#mapInfoPanel");
+const mapInfoBodyEl = $("#mapInfoBody");
+
+function levelForRadius(r) {
+  if (r <= 1000) return 5;
+  if (r <= 5000) return 7;
+  return 9;
+}
 
 function renderMapView() {
-  const container = $("#mapContainer");
   if (!KAKAO_JS_KEY) {
-    container.textContent = "지도를 쓰려면 js/config.js에 KAKAO_JS_KEY를 입력해주세요.";
+    mapContainerEl.textContent = "지도를 쓰려면 js/config.js에 KAKAO_JS_KEY를 입력해주세요.";
     return;
   }
   if (state.lat == null) {
-    container.textContent = "위치 정보를 가져오는 중이에요.";
+    mapContainerEl.textContent = "위치 정보를 가져오는 중이에요.";
     return;
   }
   loadKakaoMapsSdk()
     .then(() => {
       const center = new kakao.maps.LatLng(state.lat, state.lng);
       if (!kakaoMap) {
-        container.textContent = "";
-        kakaoMap = new kakao.maps.Map(container, { center, level: 5 });
+        mapContainerEl.textContent = "";
+        kakaoMap = new kakao.maps.Map(mapContainerEl, { center, level: levelForRadius(state.radius) });
+        kakaoMap.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
       } else {
         kakaoMap.setCenter(center);
+        kakaoMap.setLevel(levelForRadius(state.radius));
         kakaoMap.relayout();
       }
       renderMapMarkers();
     })
     .catch(() => {
-      container.textContent = "지도를 불러오지 못했어요. 카카오 개발자센터 JavaScript 키에 이 도메인이 등록되어 있는지 확인해주세요.";
+      mapContainerEl.textContent = "지도를 불러오지 못했어요. 카카오 개발자센터 JavaScript 키에 이 도메인이 등록되어 있는지 확인해주세요.";
     });
 }
 
@@ -477,6 +488,7 @@ function renderMapMarkers() {
   mapMarkers.forEach((m) => m.setMap(null));
   mapMarkers = [];
   if (myLocationOverlay) myLocationOverlay.setMap(null);
+  if (radiusCircle) radiusCircle.setMap(null);
 
   const myPos = new kakao.maps.LatLng(state.lat, state.lng);
   myLocationOverlay = new kakao.maps.CustomOverlay({
@@ -486,13 +498,49 @@ function renderMapMarkers() {
     content: '<div style="width:16px;height:16px;border-radius:50%;background:#4285F4;border:3px solid #fff;box-shadow:0 0 4px rgba(0,0,0,0.5);"></div>',
   });
 
+  radiusCircle = new kakao.maps.Circle({
+    center: myPos,
+    radius: state.radius,
+    strokeWeight: 2,
+    strokeColor: "#FF3B30",
+    strokeOpacity: 0.8,
+    strokeStyle: "solid",
+    fillColor: "#FF3B30",
+    fillOpacity: 0.08,
+  });
+  radiusCircle.setMap(kakaoMap);
+
   state.results.forEach((place) => {
     const pos = new kakao.maps.LatLng(Number(place.y), Number(place.x));
     const marker = new kakao.maps.Marker({ position: pos, map: kakaoMap, title: place.place_name });
-    kakao.maps.event.addListener(marker, "click", () => openDetail(place));
+    kakao.maps.event.addListener(marker, "click", () => showMapInfo(place));
     mapMarkers.push(marker);
   });
 }
+
+function showMapInfo(place) {
+  mapContainerEl.classList.add("shrunk");
+  setTimeout(() => kakaoMap && kakaoMap.relayout(), 260);
+
+  mapInfoBodyEl.innerHTML = `
+    <p class="info-name">${escapeHtml(place.place_name)}</p>
+    <p class="info-cat">${escapeHtml(simplifyCategory(place.category_name))}</p>
+    <div class="info-row"><span class="label">거리</span><span class="value">${formatDistance(place.distance)} · ${formatWalkTime(place.distance)}</span></div>
+    <div class="info-row"><span class="label">주소</span><span class="value">${escapeHtml(place.road_address_name || place.address_name || "정보 없음")}</span></div>
+    <div class="info-row"><span class="label">전화</span><span class="value">${escapeHtml(place.phone || "정보 없음")}</span></div>
+    <button id="mapInfoDetailBtn" class="random-detail-btn">자세히 보기</button>
+  `;
+  $("#mapInfoDetailBtn").addEventListener("click", () => openDetail(place));
+  mapInfoPanelEl.hidden = false;
+}
+
+function hideMapInfo() {
+  mapInfoPanelEl.hidden = true;
+  mapContainerEl.classList.remove("shrunk");
+  setTimeout(() => kakaoMap && kakaoMap.relayout(), 260);
+}
+
+$("#mapInfoClose").addEventListener("click", hideMapInfo);
 
 // ===== 위치 =====
 function locateAndLoad() {

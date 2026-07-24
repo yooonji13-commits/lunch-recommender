@@ -15,7 +15,7 @@
 <link rel="icon" href="icons/favicon-32-v2.png">
 <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body onclick="">
 
@@ -87,6 +87,10 @@
   <!-- 지도 탭 -->
   <section id="tab-map" class="tab-panel">
     <div id="mapContainer" class="map-container"></div>
+    <div id="mapInfoPanel" class="map-info-panel" hidden>
+      <button id="mapInfoClose" class="map-info-close" aria-label="닫기">✕</button>
+      <div id="mapInfoBody"></div>
+    </div>
   </section>
 
   <!-- 랜덤고르기 탭 -->
@@ -144,6 +148,6 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=3"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>

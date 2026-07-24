@@ -283,8 +283,9 @@ body {
 
 .map-container {
   width: 100%;
-  height: calc(100vh - 230px);
-  min-height: 320px;
+  height: calc(100vh - 300px);
+  min-height: 260px;
+  max-height: 420px;
   border-radius: 14px;
   overflow: hidden;
   background: var(--card-bg);
@@ -296,6 +297,33 @@ body {
   font-size: 13px;
   text-align: center;
   padding: 20px;
+  transition: height 0.25s ease;
+}
+.map-container.shrunk {
+  height: calc(100vh - 300px);
+  max-height: 190px;
+}
+
+.map-info-panel {
+  position: relative;
+  margin-top: 10px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.2s ease;
+}
+.map-info-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: var(--bg);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-sub);
+  font-size: 13px;
 }
 
 .random-panel {
@@ -328,31 +356,31 @@ body {
   box-shadow: var(--shadow);
   margin-bottom: 16px;
 }
-.random-info .name {
+.info-name {
   font-size: 19px;
   font-weight: 800;
   margin: 0 0 4px;
 }
-.random-info .cat {
+.info-cat {
   font-size: 13px;
   color: var(--accent);
   font-weight: 700;
   margin: 0 0 10px;
 }
-.random-info .row {
+.info-row {
   display: flex;
   gap: 10px;
   padding: 8px 0;
   border-top: 1px solid var(--border);
   font-size: 13.5px;
 }
-.random-info .row .label {
+.info-row .label {
   width: 56px;
   flex-shrink: 0;
   color: var(--text-sub);
   font-weight: 600;
 }
-.random-info .row .value { flex: 1; word-break: keep-all; }
+.info-row .value { flex: 1; word-break: keep-all; }
 .random-pick-btn {
   width: 100%;
   border: none;
