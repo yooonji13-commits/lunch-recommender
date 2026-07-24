@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>오늘 뭐 먹지?</title>
+
+<!-- iOS 홈화면 추가(PWA) 지원 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="뭐먹지">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FF3B30">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png">
+<link rel="manifest" href="manifest.json">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- 상단 헤더 -->
+  <header class="topbar">
+    <h1>오늘 뭐 먹지?</h1>
+    <button id="refreshBtn" class="icon-btn" title="새로고침" aria-label="새로고침">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+    </button>
+  </header>
+
+  <!-- 위치/상태 배너 -->
+  <div id="statusBanner" class="status-banner" hidden></div>
+
+  <!-- 탭 -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="nearby">주변 맛집</button>
+    <button class="tab-btn" data-tab="favorites">즐겨찾기 <span id="favCount" class="badge">0</span></button>
+    <button class="tab-btn" data-tab="recent">최근 본 가게</button>
+  </nav>
+
+  <!-- 주변 맛집 탭 -->
+  <section id="tab-nearby" class="tab-panel active">
+
+    <div class="control-row">
+      <span class="control-label">반경</span>
+      <div class="chip-group" id="radiusGroup">
+        <button class="chip active" data-radius="1000">1km</button>
+        <button class="chip" data-radius="5000">5km</button>
+        <button class="chip" data-radius="10000">10km</button>
+      </div>
+    </div>
+
+    <div class="control-row wrap">
+      <span class="control-label">종류</span>
+      <div class="chip-group" id="categoryGroup">
+        <button class="chip active" data-kw="">전체</button>
+        <button class="chip" data-kw="한식">한식</button>
+        <button class="chip" data-kw="중식">중식</button>
+        <button class="chip" data-kw="일식">일식</button>
+        <button class="chip" data-kw="양식">양식</button>
+        <button class="chip" data-kw="분식">분식</button>
+        <button class="chip" data-kw="카페">카페</button>
+        <button class="chip" data-kw="치킨">치킨</button>
+        <button class="chip" data-kw="고기">고기/구이</button>
+        <button class="chip" data-kw="아시안">아시안</button>
+        <button class="chip" data-kw="패스트푸드">패스트푸드</button>
+      </div>
+    </div>
+
+    <button id="randomBtn" class="random-btn">
+      🎲 랜덤으로 오늘 메뉴 뽑기
+    </button>
+
+    <div id="resultMeta" class="result-meta"></div>
+
+    <ul id="list" class="list"></ul>
+
+    <div id="listSkeleton" class="skeleton-wrap" hidden>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+
+    <div id="emptyState" class="empty-state" hidden>주변에 결과가 없어요. 반경을 넓혀보세요.</div>
+
+    <button id="loadMoreBtn" class="load-more-btn" hidden>더보기</button>
+  </section>
+
+  <!-- 즐겨찾기 탭 -->
+  <section id="tab-favorites" class="tab-panel">
+    <ul id="favList" class="list"></ul>
+    <div id="favEmpty" class="empty-state">아직 즐겨찾기한 가게가 없어요. 하트를 눌러 저장해보세요.</div>
+  </section>
+
+  <!-- 최근 본 가게 탭 -->
+  <section id="tab-recent" class="tab-panel">
+    <ul id="recentList" class="list"></ul>
+    <div id="recentEmpty" class="empty-state">아직 본 가게가 없어요.</div>
+  </section>
+
+</div>
+
+<!-- 상세 정보 모달 -->
+<div id="detailModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <button class="modal-close" id="detailClose" aria-label="닫기">✕</button>
+    <div id="detailBody" class="modal-body"></div>
+  </div>
+</div>
+
+<!-- 랜덤 추천 모달 -->
+<div id="randomModal" class="modal-backdrop" hidden>
+  <div class="modal random-modal">
+    <button class="modal-close" id="randomClose" aria-label="닫기">✕</button>
+    <div class="random-body">
+      <div id="randomSpin" class="random-spin">🍽️</div>
+      <div id="randomResult" class="random-result"></div>
+      <div class="random-actions">
+        <button id="randomReroll" class="btn-outline">다른 메뉴 뽑기</button>
+        <button id="randomDetail" class="btn-primary">자세히 보기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
