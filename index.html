@@ -17,7 +17,7 @@
 
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body onclick="">
 
 <div id="app">
 
@@ -31,13 +31,6 @@
 
   <!-- 위치/상태 배너 -->
   <div id="statusBanner" class="status-banner" hidden></div>
-
-  <!-- 탭 -->
-  <nav class="tabs">
-    <button class="tab-btn active" data-tab="nearby">주변 맛집</button>
-    <button class="tab-btn" data-tab="favorites">즐겨찾기 <span id="favCount" class="badge">0</span></button>
-    <button class="tab-btn" data-tab="recent">최근 본 가게</button>
-  </nav>
 
   <!-- 주변 맛집 탭 -->
   <section id="tab-nearby" class="tab-panel active">
@@ -83,6 +76,16 @@
     <button id="loadMoreBtn" class="load-more-btn" hidden>더보기</button>
   </section>
 
+  <!-- 랜덤고르기 탭 -->
+  <section id="tab-random" class="tab-panel">
+    <div class="random-panel">
+      <div id="randomSpin" class="random-spin">🍽️</div>
+      <div id="randomResult" class="random-result">버튼을 눌러 오늘 메뉴를 뽑아보세요</div>
+      <button id="randomPickBtn" class="random-pick-btn">🎲 오늘 메뉴 뽑기</button>
+      <button id="randomDetailBtn" class="random-detail-btn" hidden>자세히 보기</button>
+    </div>
+  </section>
+
   <!-- 즐겨찾기 탭 -->
   <section id="tab-favorites" class="tab-panel">
     <ul id="favList" class="list"></ul>
@@ -96,6 +99,22 @@
   </section>
 
 </div>
+
+<!-- 하단 탭 바 -->
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="nearby">
+    <span class="tab-icon">🍜</span><span class="tab-label">주변맛집</span>
+  </button>
+  <button class="tab-btn" data-tab="random">
+    <span class="tab-icon">🎲</span><span class="tab-label">랜덤고르기</span>
+  </button>
+  <button class="tab-btn" data-tab="favorites">
+    <span class="tab-icon">🤍</span><span class="tab-label">즐겨찾기</span><span id="favCount" class="badge">0</span>
+  </button>
+  <button class="tab-btn" data-tab="recent">
+    <span class="tab-icon">🕓</span><span class="tab-label">최근본가게</span>
+  </button>
+</nav>
 
 <!-- 상세 정보 모달 -->
 <div id="detailModal" class="modal-backdrop" hidden>

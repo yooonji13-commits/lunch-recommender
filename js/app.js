@@ -18,6 +18,7 @@ const state = {
   page: 1,
   isEnd: false,
   renderCount: 0,
+  lastRandomId: null,
 };
 
 // ===== DOM =====
@@ -341,10 +342,50 @@ function handleFetchError(err) {
       "error"
     );
   } else {
-    setBanner("음식점 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요. (도메인이 카카오 개발자센터 Web 플랫폼에 등록되어 있는지 확인해보세요)", "error");
+    setBanner("음식점 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.", "error");
     console.error(err);
   }
 }
+
+// ===== 랜덤고르기 탭 =====
+let currentRandomPlace = null;
+const randomSpinEl = $("#randomSpin");
+const randomResultEl = $("#randomResult");
+const randomPickBtn = $("#randomPickBtn");
+const randomDetailBtn = $("#randomDetailBtn");
+
+randomPickBtn.addEventListener("click", () => {
+  if (state.results.length === 0) {
+    showToast("먼저 주변맛집 탭에서 목록을 불러와주세요");
+    return;
+  }
+  spinRandom();
+});
+
+function spinRandom() {
+  randomSpinEl.classList.add("spinning");
+  randomResultEl.textContent = "";
+  setTimeout(() => {
+    randomSpinEl.classList.remove("spinning");
+    const pool = state.results.length > 1
+      ? state.results.filter((p) => p.id !== state.lastRandomId)
+      : state.results;
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    state.lastRandomId = picked.id;
+    currentRandomPlace = picked;
+    randomResultEl.innerHTML = `
+      ${escapeHtml(picked.place_name)}
+      <span class="sub">${escapeHtml(simplifyCategory(picked.category_name))} · ${formatDistance(picked.distance)}</span>
+    `;
+    randomPickBtn.textContent = "🎲 다른 메뉴 뽑기";
+    randomDetailBtn.hidden = false;
+  }, 550);
+}
+
+randomDetailBtn.addEventListener("click", () => {
+  if (!currentRandomPlace) return;
+  openDetail(currentRandomPlace);
+});
 
 // ===== 위치 =====
 function locateAndLoad() {
