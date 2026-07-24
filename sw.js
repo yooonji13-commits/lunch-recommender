@@ -1,10 +1,10 @@
-const CACHE_NAME = "lunch-app-shell-v2";
+const CACHE_NAME = "lunch-app-shell-v3";
 const SHELL_FILES = [
   "./index.html",
   "./manifest.json",
-  "./css/style.css",
-  "./js/app.js",
-  "./js/config.js",
+  "./css/style.css?v=2",
+  "./js/app.js?v=2",
+  "./js/config.js?v=2",
   "./icons/icon-192-v2.png",
   "./icons/icon-512-v2.png",
   "./icons/apple-touch-icon-v2.png",
