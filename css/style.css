@@ -222,11 +222,22 @@ body {
   margin: 0;
 }
 .card-dist {
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.card-dist .dist-m {
+  display: block;
   font-size: 12px;
   font-weight: 700;
   color: var(--accent);
-  white-space: nowrap;
-  flex-shrink: 0;
+}
+.card-dist .dist-walk {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-sub);
+  margin-top: 1px;
 }
 .fav-btn {
   border: none;
@@ -269,6 +280,23 @@ body {
   font-size: 14px;
 }
 .load-more-btn:active { transform: scale(0.98); }
+
+.map-container {
+  width: 100%;
+  height: calc(100vh - 230px);
+  min-height: 320px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sub);
+  font-size: 13px;
+  text-align: center;
+  padding: 20px;
+}
 
 .random-panel {
   text-align: center;
