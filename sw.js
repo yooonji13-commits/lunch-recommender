@@ -1,13 +1,13 @@
-const CACHE_NAME = "lunch-app-shell-v1";
+const CACHE_NAME = "lunch-app-shell-v2";
 const SHELL_FILES = [
   "./index.html",
   "./manifest.json",
   "./css/style.css",
   "./js/app.js",
   "./js/config.js",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png",
+  "./icons/icon-192-v2.png",
+  "./icons/icon-512-v2.png",
+  "./icons/apple-touch-icon-v2.png",
 ];
 
 self.addEventListener("install", (event) => {
