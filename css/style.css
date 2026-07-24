@@ -299,12 +299,12 @@ body {
 }
 
 .random-panel {
-  text-align: center;
-  padding: 60px 20px 20px;
+  padding: 40px 4px 20px;
 }
 .random-spin {
-  font-size: 72px;
-  margin-bottom: 18px;
+  font-size: 64px;
+  text-align: center;
+  margin-bottom: 14px;
 }
 .random-spin.spinning { animation: spin 0.6s linear infinite; }
 @keyframes spin {
@@ -312,20 +312,47 @@ body {
   50% { transform: rotate(180deg) scale(1.15); }
   100% { transform: rotate(360deg) scale(1); }
 }
-.random-result {
-  font-size: 20px;
-  font-weight: 800;
+.random-placeholder {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-sub);
   min-height: 30px;
   margin-bottom: 28px;
-  color: var(--text-sub);
 }
-.random-result .sub {
-  display: block;
+.random-info {
+  text-align: left;
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+.random-info .name {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+.random-info .cat {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--text-sub);
-  margin-top: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 10px;
 }
+.random-info .row {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 13.5px;
+}
+.random-info .row .label {
+  width: 56px;
+  flex-shrink: 0;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+.random-info .row .value { flex: 1; word-break: keep-all; }
 .random-pick-btn {
   width: 100%;
   border: none;

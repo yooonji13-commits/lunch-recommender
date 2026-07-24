@@ -382,6 +382,7 @@ function handleFetchError(err) {
 // ===== 랜덤고르기 탭 =====
 let currentRandomPlace = null;
 const randomSpinEl = $("#randomSpin");
+const randomPlaceholderEl = $("#randomPlaceholder");
 const randomResultEl = $("#randomResult");
 const randomPickBtn = $("#randomPickBtn");
 const randomDetailBtn = $("#randomDetailBtn");
@@ -396,7 +397,6 @@ randomPickBtn.addEventListener("click", () => {
 
 function spinRandom() {
   randomSpinEl.classList.add("spinning");
-  randomResultEl.textContent = "";
   setTimeout(() => {
     randomSpinEl.classList.remove("spinning");
     const pool = state.results.length > 1
@@ -405,9 +405,15 @@ function spinRandom() {
     const picked = pool[Math.floor(Math.random() * pool.length)];
     state.lastRandomId = picked.id;
     currentRandomPlace = picked;
+
+    randomPlaceholderEl.hidden = true;
+    randomResultEl.hidden = false;
     randomResultEl.innerHTML = `
-      ${escapeHtml(picked.place_name)}
-      <span class="sub">${escapeHtml(simplifyCategory(picked.category_name))} · ${formatDistance(picked.distance)}</span>
+      <p class="name">${escapeHtml(picked.place_name)}</p>
+      <p class="cat">${escapeHtml(simplifyCategory(picked.category_name))}</p>
+      <div class="row"><span class="label">거리</span><span class="value">${formatDistance(picked.distance)} · ${formatWalkTime(picked.distance)}</span></div>
+      <div class="row"><span class="label">주소</span><span class="value">${escapeHtml(picked.road_address_name || picked.address_name || "정보 없음")}</span></div>
+      <div class="row"><span class="label">전화</span><span class="value">${escapeHtml(picked.phone || "정보 없음")}</span></div>
     `;
     randomPickBtn.textContent = "🎲 다른 메뉴 뽑기";
     randomDetailBtn.hidden = false;

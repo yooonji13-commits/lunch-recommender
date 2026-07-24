@@ -15,7 +15,7 @@
 <link rel="icon" href="icons/favicon-32-v2.png">
 <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body onclick="">
 
@@ -93,7 +93,8 @@
   <section id="tab-random" class="tab-panel">
     <div class="random-panel">
       <div id="randomSpin" class="random-spin">🍽️</div>
-      <div id="randomResult" class="random-result">버튼을 눌러 오늘 메뉴를 뽑아보세요</div>
+      <p id="randomPlaceholder" class="random-placeholder">버튼을 눌러 오늘 메뉴를 뽑아보세요</p>
+      <div id="randomResult" class="random-info" hidden></div>
       <button id="randomPickBtn" class="random-pick-btn">🎲 오늘 메뉴 뽑기</button>
       <button id="randomDetailBtn" class="random-detail-btn" hidden>자세히 보기</button>
     </div>
@@ -143,6 +144,6 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
