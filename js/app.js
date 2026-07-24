@@ -11,7 +11,7 @@ const RECENT_KEY = "lunch_recent_v1";
 const state = {
   lat: null,
   lng: null,
-  radius: 1000,
+  radius: 500,
   keyword: "",
   results: [],
   ids: new Set(),
@@ -336,7 +336,10 @@ loadMoreBtn.addEventListener("click", async () => {
 });
 
 // ===== 새로고침 =====
-$("#refreshBtn").addEventListener("click", () => locateAndLoad());
+$("#refreshBtn").addEventListener("click", () => {
+  hideMapInfo();
+  locateAndLoad();
+});
 
 // ===== 목록 초기 로드 =====
 async function loadInitial() {
@@ -450,9 +453,22 @@ const mapInfoPanelEl = $("#mapInfoPanel");
 const mapInfoBodyEl = $("#mapInfoBody");
 
 function levelForRadius(r) {
-  if (r <= 1000) return 5;
-  if (r <= 5000) return 7;
-  return 9;
+  if (r <= 100) return 2;
+  if (r <= 300) return 3;
+  if (r <= 500) return 3;
+  if (r <= 1000) return 4;
+  if (r <= 3000) return 5;
+  return 6;
+}
+
+async function ensureAllResultsLoaded() {
+  while (!state.isEnd && state.results.length < MAX_TOTAL) {
+    try {
+      await loadMorePage();
+    } catch (e) {
+      break;
+    }
+  }
 }
 
 function renderMapView() {
@@ -476,8 +492,9 @@ function renderMapView() {
         kakaoMap.setLevel(levelForRadius(state.radius));
         kakaoMap.relayout();
       }
-      renderMapMarkers();
+      return ensureAllResultsLoaded();
     })
+    .then(() => renderMapMarkers())
     .catch(() => {
       mapContainerEl.textContent = "지도를 불러오지 못했어요. 카카오 개발자센터 JavaScript 키에 이 도메인이 등록되어 있는지 확인해주세요.";
     });

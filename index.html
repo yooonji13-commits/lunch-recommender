@@ -15,7 +15,7 @@
 <link rel="icon" href="icons/favicon-32-v2.png">
 <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body onclick="">
 
@@ -38,9 +38,12 @@
     <div class="control-row">
       <span class="control-label">반경</span>
       <div class="chip-group" id="radiusGroup">
-        <button class="chip active" data-radius="1000">1km</button>
+        <button class="chip" data-radius="100">100m</button>
+        <button class="chip" data-radius="300">300m</button>
+        <button class="chip active" data-radius="500">500m</button>
+        <button class="chip" data-radius="1000">1km</button>
+        <button class="chip" data-radius="3000">3km</button>
         <button class="chip" data-radius="5000">5km</button>
-        <button class="chip" data-radius="10000">10km</button>
       </div>
     </div>
 
@@ -148,6 +151,6 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

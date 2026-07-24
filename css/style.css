@@ -283,9 +283,9 @@ body {
 
 .map-container {
   width: 100%;
-  height: calc(100vh - 300px);
-  min-height: 260px;
-  max-height: 420px;
+  height: 66vh;
+  min-height: 320px;
+  max-height: 640px;
   border-radius: 14px;
   overflow: hidden;
   background: var(--card-bg);
