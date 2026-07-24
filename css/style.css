@@ -300,8 +300,9 @@ body {
   transition: height 0.25s ease;
 }
 .map-container.shrunk {
-  height: calc(100vh - 300px);
-  max-height: 190px;
+  height: 180px;
+  min-height: 180px;
+  max-height: 180px;
 }
 
 .map-info-panel {
