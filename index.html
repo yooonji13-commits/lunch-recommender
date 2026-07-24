@@ -15,7 +15,7 @@
 <link rel="icon" href="icons/favicon-32-v2.png">
 <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="css/style.css?v=6">
+<link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body onclick="">
 
@@ -43,7 +43,6 @@
         <button class="chip active" data-radius="500">500m</button>
         <button class="chip" data-radius="1000">1km</button>
         <button class="chip" data-radius="3000">3km</button>
-        <button class="chip" data-radius="5000">5km</button>
       </div>
     </div>
 
@@ -89,10 +88,12 @@
 
   <!-- 지도 탭 -->
   <section id="tab-map" class="tab-panel">
-    <div id="mapContainer" class="map-container"></div>
-    <div id="mapInfoPanel" class="map-info-panel" hidden>
-      <button id="mapInfoClose" class="map-info-close" aria-label="닫기">✕</button>
-      <div id="mapInfoBody"></div>
+    <div class="map-wrap">
+      <div id="mapContainer" class="map-container"></div>
+      <div id="mapInfoPanel" class="map-info-overlay" hidden>
+        <button id="mapInfoClose" class="map-info-close" aria-label="닫기">✕</button>
+        <div id="mapInfoBody"></div>
+      </div>
     </div>
   </section>
 
@@ -151,6 +152,6 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=5"></script>
+<script src="js/app.js?v=6"></script>
 </body>
 </html>

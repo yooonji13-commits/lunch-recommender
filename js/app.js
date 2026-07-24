@@ -536,9 +536,6 @@ function renderMapMarkers() {
 }
 
 function showMapInfo(place) {
-  mapContainerEl.classList.add("shrunk");
-  setTimeout(() => kakaoMap && kakaoMap.relayout(), 260);
-
   mapInfoBodyEl.innerHTML = `
     <p class="info-name">${escapeHtml(place.place_name)}</p>
     <p class="info-cat">${escapeHtml(simplifyCategory(place.category_name))}</p>
@@ -553,8 +550,6 @@ function showMapInfo(place) {
 
 function hideMapInfo() {
   mapInfoPanelEl.hidden = true;
-  mapContainerEl.classList.remove("shrunk");
-  setTimeout(() => kakaoMap && kakaoMap.relayout(), 260);
 }
 
 $("#mapInfoClose").addEventListener("click", hideMapInfo);
