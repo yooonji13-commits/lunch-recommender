@@ -18,7 +18,6 @@ const state = {
   page: 1,
   isEnd: false,
   renderCount: 0,
-  lastRandomId: null,
 };
 
 // ===== DOM =====
@@ -346,47 +345,6 @@ function handleFetchError(err) {
     console.error(err);
   }
 }
-
-// ===== 랜덤 추천 =====
-$("#randomBtn").addEventListener("click", () => {
-  if (state.results.length === 0) {
-    showToast("먼저 주변 맛집을 불러와주세요");
-    return;
-  }
-  $("#randomModal").hidden = false;
-  spinRandom();
-});
-$("#randomClose").addEventListener("click", () => { $("#randomModal").hidden = true; });
-$("#randomModal").addEventListener("click", (e) => {
-  if (e.target.id === "randomModal") $("#randomModal").hidden = true;
-});
-$("#randomReroll").addEventListener("click", () => spinRandom());
-
-let currentRandomPlace = null;
-function spinRandom() {
-  const spinEl = $("#randomSpin");
-  const resultEl = $("#randomResult");
-  spinEl.classList.add("spinning");
-  resultEl.innerHTML = "";
-  setTimeout(() => {
-    spinEl.classList.remove("spinning");
-    const pool = state.results.length > 1
-      ? state.results.filter((p) => p.id !== state.lastRandomId)
-      : state.results;
-    const picked = pool[Math.floor(Math.random() * pool.length)];
-    state.lastRandomId = picked.id;
-    currentRandomPlace = picked;
-    resultEl.innerHTML = `
-      ${escapeHtml(picked.place_name)}
-      <span class="sub">${escapeHtml(simplifyCategory(picked.category_name))} · ${formatDistance(picked.distance)}</span>
-    `;
-  }, 550);
-}
-$("#randomDetail").addEventListener("click", () => {
-  if (!currentRandomPlace) return;
-  $("#randomModal").hidden = true;
-  openDetail(currentRandomPlace);
-});
 
 // ===== 위치 =====
 function locateAndLoad() {
