@@ -15,7 +15,7 @@
 <link rel="icon" href="icons/favicon-32-v2.png">
 <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body onclick="">
 
@@ -35,43 +35,43 @@
   <!-- 주변 맛집 탭 -->
   <section id="tab-nearby" class="tab-panel active">
 
-    <div class="control-row">
-      <span class="control-label">반경</span>
-      <div class="chip-group" id="radiusGroup">
-        <button class="chip" data-radius="100">100m</button>
-        <button class="chip" data-radius="300">300m</button>
-        <button class="chip active" data-radius="500">500m</button>
-        <button class="chip" data-radius="1000">1km</button>
-        <button class="chip" data-radius="3000">3km</button>
+    <div class="nearby-sticky">
+      <div class="control-row">
+        <span class="control-label">반경</span>
+        <div class="chip-group" id="radiusGroup">
+          <button class="chip" data-radius="100">100m</button>
+          <button class="chip" data-radius="300">300m</button>
+          <button class="chip active" data-radius="500">500m</button>
+          <button class="chip" data-radius="1000">1km</button>
+          <button class="chip" data-radius="3000">3km</button>
+        </div>
       </div>
-    </div>
 
-    <div class="control-row wrap">
-      <span class="control-label">종류</span>
-      <div class="chip-group" id="categoryGroup">
-        <button class="chip active" data-kw="">전체</button>
-        <button class="chip" data-kw="한식">한식</button>
-        <button class="chip" data-kw="중식">중식</button>
-        <button class="chip" data-kw="일식">일식</button>
-        <button class="chip" data-kw="양식">양식</button>
-        <button class="chip" data-kw="분식">분식</button>
-        <button class="chip" data-kw="카페">카페</button>
-        <button class="chip" data-kw="치킨">치킨</button>
-        <button class="chip" data-kw="고기">고기/구이</button>
-        <button class="chip" data-kw="아시안">아시안</button>
-        <button class="chip" data-kw="패스트푸드">패스트푸드</button>
+      <div class="control-row wrap">
+        <span class="control-label">종류</span>
+        <div class="chip-group" id="categoryGroup">
+          <button class="chip active" data-kw="">전체</button>
+          <button class="chip" data-kw="한식">한식</button>
+          <button class="chip" data-kw="중식">중식</button>
+          <button class="chip" data-kw="일식">일식</button>
+          <button class="chip" data-kw="양식">양식</button>
+          <button class="chip" data-kw="분식">분식</button>
+          <button class="chip" data-kw="카페">카페</button>
+          <button class="chip" data-kw="아시안">아시안</button>
+          <button class="chip" data-kw="패스트푸드">패스트푸드</button>
+        </div>
       </div>
-    </div>
 
-    <div class="control-row">
-      <span class="control-label">정렬</span>
-      <div class="chip-group" id="sortGroup">
-        <button class="chip active" data-sort="distance">가까운순</button>
-        <button class="chip" data-sort="name">이름순</button>
+      <div class="control-row">
+        <span class="control-label">정렬</span>
+        <div class="chip-group" id="sortGroup">
+          <button class="chip active" data-sort="distance">가까운순</button>
+          <button class="chip" data-sort="name">이름순</button>
+        </div>
       </div>
-    </div>
 
-    <div id="resultMeta" class="result-meta"></div>
+      <div id="resultMeta" class="result-meta"></div>
+    </div>
 
     <ul id="list" class="list"></ul>
 
@@ -152,6 +152,6 @@
 <div id="toast" class="toast" hidden></div>
 
 <script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=6"></script>
+<script src="js/app.js?v=7"></script>
 </body>
 </html>

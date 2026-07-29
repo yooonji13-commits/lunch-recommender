@@ -133,6 +133,14 @@ body {
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
+.nearby-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  background: var(--bg);
+  padding-top: 4px;
+}
+
 .control-row {
   display: flex;
   align-items: center;
@@ -307,7 +315,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 33%;
+  height: 22%;
   background: var(--card-bg);
   border-radius: 16px 16px 0 0;
   padding: 14px 18px;

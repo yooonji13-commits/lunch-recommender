@@ -6,6 +6,7 @@ const MAX_TOTAL = 30;
 const API_PAGE_SIZE = 15;
 const FAV_KEY = "lunch_favorites_v1";
 const RECENT_KEY = "lunch_recent_v1";
+const LAST_LOCATION_KEY = "lunch_last_location_v1";
 
 // ===== 상태 =====
 const state = {
@@ -99,6 +100,18 @@ function pushRecent(place) {
   let recent = getRecent().filter((p) => p.id !== place.id);
   recent.unshift(place);
   saveRecent(recent);
+}
+
+function getCachedLocation() {
+  try { return JSON.parse(localStorage.getItem(LAST_LOCATION_KEY)); } catch { return null; }
+}
+function saveCachedLocation(lat, lng) {
+  localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify({ lat, lng, ts: Date.now() }));
+}
+function metersBetween(lat1, lng1, lat2, lng2) {
+  const dLat = (lat1 - lat2) * 111320;
+  const dLng = (lng1 - lng2) * 111320 * Math.cos((lat1 * Math.PI) / 180);
+  return Math.sqrt(dLat * dLat + dLng * dLng);
 }
 
 // ===== 카카오 API =====
@@ -560,15 +573,33 @@ function locateAndLoad() {
     setBanner("이 브라우저는 위치 정보를 지원하지 않아요.", "error");
     return;
   }
-  setBanner("현재 위치를 가져오는 중...");
+
+  const cached = getCachedLocation();
+  if (cached) {
+    // 이전에 받아둔 위치로 즉시 화면을 보여주고, 최신 위치는 아래에서 조용히 갱신
+    state.lat = cached.lat;
+    state.lng = cached.lng;
+    setBanner("");
+    loadInitial();
+  } else {
+    setBanner("현재 위치를 가져오는 중...");
+  }
+
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      state.lat = pos.coords.latitude;
-      state.lng = pos.coords.longitude;
-      setBanner("");
-      loadInitial();
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const moved = !cached || metersBetween(lat, lng, cached.lat, cached.lng) > 50;
+      saveCachedLocation(lat, lng);
+      state.lat = lat;
+      state.lng = lng;
+      if (moved) {
+        setBanner("");
+        loadInitial();
+      }
     },
     (err) => {
+      if (cached) return; // 캐시된 위치로 이미 화면을 보여줬으니 에러 안내는 생략
       let msg = "위치 정보를 가져오지 못했어요.";
       if (err.code === err.PERMISSION_DENIED) {
         msg = `위치 권한이 꺼져 있어요. iPhone <b>설정 &gt; Safari(또는 이 앱) &gt; 위치</b>에서 허용으로 바꾼 뒤 새로고침 버튼을 눌러주세요.`;
@@ -577,7 +608,7 @@ function locateAndLoad() {
       const retryBtn = document.getElementById("retryLocBtn");
       if (retryBtn) retryBtn.addEventListener("click", locateAndLoad);
     },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
   );
 }
 
