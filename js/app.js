@@ -40,14 +40,13 @@ function formatDistance(m) {
   return n < 1000 ? `${n}m` : `${(n / 1000).toFixed(1)}km`;
 }
 
-const WALK_METERS_PER_MIN = 67; // 평균 도보 속도(약 4km/h) 기준
+const WALK_METERS_PER_MIN = 67; // 평균 도보 속도(약 4km/h) 기준 추정치
 function formatWalkTime(m) {
   const n = Number(m);
   if (Number.isNaN(n)) return "";
   const mins = Math.max(1, Math.round(n / WALK_METERS_PER_MIN));
-  return `도보 ${mins}분`;
+  return `도보 약 ${mins}분`;
 }
-
 function simplifyCategory(catName) {
   if (!catName) return "";
   const parts = catName.split(">").map((s) => s.trim());
